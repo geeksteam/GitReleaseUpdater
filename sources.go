@@ -20,8 +20,8 @@ type DirectLinks struct {
 	DownloadDir string
 }
 
-func SourceDirectLinks(versionURL, downloadURL string) DirectLinks {
-	return DirectLinks{
+func SourceDirectLinks(versionURL, downloadURL string) *DirectLinks {
+	return &DirectLinks{
 		VersionURL:  versionURL,
 		DownloadURL: downloadURL,
 		DownloadDir: defaultDownloadDir,
