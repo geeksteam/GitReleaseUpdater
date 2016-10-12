@@ -14,3 +14,9 @@ func RCService(service string) func() error {
 		return nil
 	}
 }
+
+func RCNothing() func() error {
+	return func() error {
+		return nil
+	}
+}
