@@ -24,6 +24,20 @@ type Updater struct {
 	CheckInterval time.Duration
 }
 
+func (u Updater) Watch() {
+	if u.Logger != nil {
+		u.Logger.Info("Looking for updates")
+	}
+
+	if err := u.Update(); err != nil {
+		if u.Logger != nil {
+			u.Logger.Error("Update failed: %s", err)
+		}
+	}
+
+	time.AfterFunc(u.CheckInterval, u.Watch)
+}
+
 func (u Updater) Update() error {
 	if err := u.checkDependencies(); err != nil {
 		return err
