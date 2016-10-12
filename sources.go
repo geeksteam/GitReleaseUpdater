@@ -63,7 +63,7 @@ type GitReleases struct {
 
 func (gr *GitReleases) LastVersion() (string, error) {
 	type release struct {
-		Version     string `json:"name"`
+		Version     string `json:"tag_name"`
 		DownloadURL string `json:"tarball_url"`
 		Description string `json:"body"`
 	}
