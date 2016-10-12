@@ -61,6 +61,16 @@ type GitReleases struct {
 	DownloadDir string
 }
 
+func SourceGitReleases(owner, repo, user, pass string) *GitReleases {
+	return &GitReleases{
+		Username:    user,
+		DownloadDir: defaultDownloadDir,
+		Owner:       owner,
+		Password:    pass,
+		Repo:        repo,
+	}
+}
+
 func (gr *GitReleases) LastVersion() (string, error) {
 	type release struct {
 		Version     string `json:"tag_name"`
