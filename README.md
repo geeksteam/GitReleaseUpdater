@@ -19,9 +19,17 @@ import updater "github.com/geeksteam/GitReleaseUpdater"
 ```go
 go updater.Updater{
 		CheckInterval:  1 * time.Hour,
+
+		// Bool func which compare current version with latest
 		NeedUpdate:     updater.VCSimpleDiff("0.1"),
+
+		// This func takes path to downloaded file and should replace current program files
 		UpdateMethod:   updater.UMUntarGz("/path/to/my/program"),
+
+		// And this one restarts your program when update finished
 		RestartCommand: updater.RCService("my-service-name"),
+
+		// Source is entity wich know where to find latest version and how download it
 		Source: updater.SourceGitReleases(
 			"repo-owner",
 			"repo-name",
@@ -41,7 +49,7 @@ var (
 	latestURL = "http://my.site/updates/latest.tar.gz"
 )
 
-updater.Updater{
+err := updater.Updater{
 		NeedUpdate:     updater.VCAlways(),
 		UpdateMethod:   updater.UMReplaceBin(),
 		RestartCommand: updater.RCService("my-service-name"),
@@ -51,6 +59,23 @@ updater.Updater{
 ```
 
 ---
+
+## Predefined functions
+### Version checkers
+All starts with **VC** and returns **func(string) bool**: 
+
+* **VCSimpleDiff(currentVer string)** - simply compare new version are equal with current
+* **VCAlways()** - only returns true
+
+### Update methods
+All starts with **UM** and return **func(string) error**
+* **UMUntarGz(destDir string)** - call tar system utility, uses for tar.gz archives
+* **UMReplaceBin()** - replaces own executable with new one
+
+### Restart command
+All starts with **RC** and returns **func() error**
+* **RCService(service string)** - it calls "service name restart"
+* **RCNothing()** - for cases when no restart needed
 
 ### Custom commands
 You can use your own functions with additional logic as parameters for updater.
