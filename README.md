@@ -77,7 +77,11 @@ All starts with **RC** and returns **func() error**
 * **RCService(service string)** - it calls "service name restart"
 * **RCNothing()** - for cases when no restart needed
 
+---
+
 ### Custom commands
 You can use your own functions with additional logic as parameters for updater.
 While **NeedUpdate**, **UpdateMethod** and **RestartCommand** is simle funcions, 
-Source is interface with 2 methods: **LastVersion() (string, error)** and **Download() (string, error)**. 
+Source is interface with 2 methods: 
+* **LastVersion() (string, error)** - returns string with latest version 
+* **Download() (string, error)** - returns path of downloaded file
