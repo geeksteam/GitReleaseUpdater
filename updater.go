@@ -7,11 +7,17 @@ import (
 	"github.com/geeksteam/klogger"
 )
 
+// DefaultCheckInterval duration which will be used for Updater.Watch method
+// when Updater.CheckInterval is 0
+var DefaultCheckInterval = 24 * time.Hour
+
+// Source It's entity which knows where to find latest version and how download it
 type Source interface {
 	LastVersion() (string, error)
 	Download() (string, error)
 }
 
+// Updater provide main functionality and contains main update flow
 type Updater struct {
 	Logger klogger.Logger
 
@@ -24,7 +30,17 @@ type Updater struct {
 	CheckInterval time.Duration
 }
 
+// Watch Allows to start watching for updates with period = Updater.CheckInterval
+// when Updater.CheckInterval is missed DefaultCheckInterval will be used
 func (u Updater) Watch() {
+	if u.CheckInterval == 0 {
+		u.CheckInterval = DefaultCheckInterval
+	}
+
+	u.watch()
+}
+
+func (u Updater) watch() {
 	if u.Logger != nil {
 		u.Logger.Info("Looking for updates")
 	}
@@ -35,9 +51,11 @@ func (u Updater) Watch() {
 		}
 	}
 
-	time.AfterFunc(u.CheckInterval, u.Watch)
+	time.AfterFunc(u.CheckInterval, u.watch)
 }
 
+// Update Looks for new version and if it different from current then downloads
+// and installs it. After all calls restart func
 func (u Updater) Update() error {
 	if err := u.checkDependencies(); err != nil {
 		return err

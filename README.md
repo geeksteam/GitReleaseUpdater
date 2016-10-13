@@ -29,7 +29,7 @@ go updater.Updater{
 		// And this one restarts your program when update finished
 		RestartCommand: updater.RCService("my-service-name"),
 
-		// Source is entity wich know where to find latest version and how download it
+		// Source is entity which knows where to find latest version and how download it
 		Source: updater.SourceGitReleases(
 			"repo-owner",
 			"repo-name",

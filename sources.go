@@ -11,8 +11,10 @@ import (
 	"strings"
 )
 
-const defaultDownloadDir = "/tmp"
+const DefaultDownloadDir = "/tmp"
 
+// DirectLinks Is a Source which uses direct links for checking last version and
+// downloading it. By default it downloads updates to /tmp dir
 type DirectLinks struct {
 	VersionURL  string
 	DownloadURL string
@@ -20,11 +22,12 @@ type DirectLinks struct {
 	DownloadDir string
 }
 
+// SourceDirectLinks Constructor for DirectLinks
 func SourceDirectLinks(versionURL, downloadURL string) *DirectLinks {
 	return &DirectLinks{
 		VersionURL:  versionURL,
 		DownloadURL: downloadURL,
-		DownloadDir: defaultDownloadDir,
+		DownloadDir: DefaultDownloadDir,
 	}
 }
 
@@ -64,7 +67,7 @@ type GitReleases struct {
 func SourceGitReleases(owner, repo, user, pass string) *GitReleases {
 	return &GitReleases{
 		Username:    user,
-		DownloadDir: defaultDownloadDir,
+		DownloadDir: DefaultDownloadDir,
 		Owner:       owner,
 		Password:    pass,
 		Repo:        repo,
