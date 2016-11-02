@@ -38,6 +38,10 @@ func (dl *DirectLinks) LastVersion() (string, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("Failed to check latest version: status is %d instead of %d", resp.StatusCode, http.StatusOK)
+	}
+
 	var b bytes.Buffer
 
 	io.Copy(&b, resp.Body)
